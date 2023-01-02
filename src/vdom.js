@@ -6,7 +6,7 @@ class VNode{
     /**
      * @param {string} type 
      * @param {string} name 
-     * @param {Array<VNode>|string} content 
+     * @param {string|null} content 
      * @param {Node} node 
      */
     constructor(type, name, content, node){
@@ -43,13 +43,14 @@ class VElement extends VNode{
     /**
      * 
      * @param {string} name 
-     * @param {Array<VNode>|string} children 
+     * @param {Array<VNode>} children 
      * @param {Node} node 
      * @param {Array<VAttribute>} props 
      */
     constructor(name, children, node, props){
-        super(VNode.element, name, children, node);
+        super(VNode.element, name, null, node);
         this.props = props;
+        this.children = children;
     }
 }
 
@@ -70,6 +71,19 @@ class VAttribute extends VNode{
 }
 
 /**
+ * text node
+ */
+class VText extends VNode{
+    /**
+     * @param {string|null} content 
+     * @param {Node} node 
+     */
+    constructor(content, node) {
+        super(VNode.text, "", content ?? "", node);
+    }
+}
+
+/**
  * generate vdom
  * @param {Element} root 
  */
@@ -84,4 +98,20 @@ export function generateVDOM(root)
         props[index] = 
             new VAttribute(value.nodeName, value.nodeValue, value);
     }
+
+    const vdom = new VElement(root.tagName.toLocaleLowerCase(), [], root, props);
+    for(const child of root.childNodes){
+        if(child.nodeType === Node.TEXT_NODE){
+            vdom.children.push(
+                new VText(child.nodeValue, child)
+            );
+        }else if(child.nodeType === Node.ELEMENT_NODE){
+            vdom.children.push(
+                // @ts-ignore
+                generateVDOM(child)
+            )
+        }
+    }
+
+    return vdom;
 }
