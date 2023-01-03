@@ -34,7 +34,7 @@ export class Init{
     /**
      * remove poci in the element
      */
-    pullPoci(){
+    pull(){
         this.#removeLabel();
         this.rootSelector = "";
         this.rootDOM = null;

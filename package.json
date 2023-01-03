@@ -1,18 +1,21 @@
 {
   "name": "poci",
+  "module": "./public/index.js",
   "version": "1.0.0",
   "description": "poci",
   "main": "index.js",
-  "type":"module",
   "directories": {
     "test": "test"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build":"npx webpack -b"
   },
   "author": "zen",
   "license": "MIT",
   "devDependencies": {
-    "eslint": "^8.31.0"
+    "eslint": "^8.31.0",
+    "terser-webpack-plugin": "^5.3.6",
+    "webpack": "^5.75.0",
+    "webpack-cli": "^5.0.1"
   }
 }
