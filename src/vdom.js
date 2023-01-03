@@ -1,4 +1,6 @@
 // @ts-check
+import randomInt from "./helper/randomInt.js";
+
 /**
  * node
  */
@@ -6,11 +8,9 @@ class VNode{
     /**
      * @param {string} type 
      * @param {string} name 
-     * @param {string|null} content 
-     * @param {Node} node 
+     * @param {string|null} content
      */
-    constructor(type, name, content, node){
-        this.$$node = node;
+    constructor(type, name, content){
         this.type = type;
         this.name = name;
         this.content = content;
@@ -43,12 +43,12 @@ class VElement extends VNode{
     /**
      * 
      * @param {string} name 
-     * @param {Array<VNode>} children 
-     * @param {Node} node 
+     * @param {Array<VNode>} children
      * @param {Array<VAttribute>} props 
      */
-    constructor(name, children, node, props){
-        super(VNode.element, name, null, node);
+    constructor(name, children, props, label){
+        super(VNode.element, name, null);
+        this.$$label = label;
         this.props = props;
         this.children = children;
     }
@@ -62,10 +62,9 @@ class VAttribute extends VNode{
     /**
      * @param {string} key 
      * @param {string|null} content 
-     * @param {Node} node 
      */
-    constructor(key, content, node) {
-        super(VNode.props, key, content ?? "", node);
+    constructor(key, content) {
+        super(VNode.props, key, content ?? "");
         
     }
 }
@@ -75,11 +74,10 @@ class VAttribute extends VNode{
  */
 class VText extends VNode{
     /**
-     * @param {string|null} content 
-     * @param {Node} node 
+     * @param {string|null} content
      */
-    constructor(content, node) {
-        super(VNode.text, "", content ?? "", node);
+    constructor(content) {
+        super(VNode.text, "", content ?? "");
     }
 }
 
@@ -96,15 +94,19 @@ export function generateVDOM(root)
     for(let index = 0; index < props.length; index++){
         const value = root.attributes[index];
         props[index] = 
-            new VAttribute(value.nodeName, value.nodeValue, value);
+            new VAttribute(value.nodeName, value.nodeValue);
     }
 
-    const vdom = new VElement(root.tagName.toLocaleLowerCase(), [], root, props);
+    // generate label
+    const label = (new Date().getTime() * randomInt(1, 50)).toString(36);
+    const vdom = new VElement(root.tagName.toLocaleLowerCase(), [], props, label);
+    // @ts-ignore
+    root.dataset.label = label;
+
+    // generate velement or vtext
     for(const child of root.childNodes){
         if(child.nodeType === Node.TEXT_NODE){
-            vdom.children.push(
-                new VText(child.nodeValue, child)
-            );
+            vdom.children.push(new VText(child.nodeValue));
         }else if(child.nodeType === Node.ELEMENT_NODE){
             vdom.children.push(
                 // @ts-ignore
