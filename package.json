@@ -8,7 +8,7 @@
     "test": "test"
   },
   "scripts": {
-    "build":"npx webpack -b"
+    "build":"npx webpack"
   },
   "author": "zen",
   "license": "MIT",

@@ -29,12 +29,12 @@ Poci is a JavaScript Library for rendering a data
 ### 1
 ```html
 <div id="root">
-   <p>My name is {{name}}</p>
+   <p>My name is {{ name }}</p>
 </div>
 <script>
-   const App = new Poci.init({
+   const App = new Poci.Init( "#root", {
      name:"Zen"
-   }, "#root");
+   });
 </script>
 ```  
 
@@ -44,9 +44,9 @@ Poci is a JavaScript Library for rendering a data
   <h1>{{ date }}</h1>
 </div>
 <script>
-  const App = new Poci.Init({
+  const App = new Poci.Init("#root", {
      date:""
-  }, "#root");
+  });
 
   setInterval(()=>{
      App.set("date", new
