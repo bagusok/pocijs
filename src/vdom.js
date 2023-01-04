@@ -1,4 +1,6 @@
 // @ts-check
+"use strict";
+
 import map from "./helper/map.js";
 import randomInt from "./helper/randomInt.js";
 
@@ -108,14 +110,10 @@ export function generateVDOM(root)
 
     // generate velement or vtext
     for(const child of root.childNodes){
-        if(child.nodeType === Node.TEXT_NODE){
-            vdom.children.push(new VText(child.nodeValue));
-        }else if(child.nodeType === Node.ELEMENT_NODE){
-            vdom.children.push(
-                // @ts-ignore
-                generateVDOM(child)
-            )
-        }
+        vdom.children.push(
+            // @ts-ignore
+            child.nodeType === Node.TEXT_NODE ? new VText(child.nodeValue) : generateVDOM(child)
+        );
     }
 
     return vdom;

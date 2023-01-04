@@ -1,3 +1,5 @@
+"use strict";
+
 import { generateVDOM } from "./vdom.js";
 import track from "./track.js";
 import PociError from "./error.js";
@@ -6,6 +8,11 @@ export class Init{
     #virtualDOM;
     #originalVDOM;
     #data;
+
+    /**
+     * @param {string} rootSelector 
+     * @param {Object} data 
+     */
     constructor(rootSelector, data = {}) {
         this.rootSelector = rootSelector;
         this.rootDOM = document.querySelector(rootSelector);
@@ -22,14 +29,16 @@ export class Init{
         this.#data = data;
         this.data = data;
     }
-    
+
+    /**
+     * @param {string} key 
+     * @param {*} value 
+     */
     set(key, value){
         this.#data[key] = value;
         this.data = {...this.#data};
         this.rerender();
     }
-
-    rerender(){}
 
     track(){
         this.#originalVDOM = track(this.rootDOM, this.#originalVDOM);
