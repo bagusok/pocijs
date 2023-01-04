@@ -2,7 +2,7 @@
 
 # Poci
 License : MIT  
-Poci is a JavaScript Library for **rendering a data**    
+Poci is a JavaScript Library for **rendering a data** with size < 5kb    
 ```npm install poci```
 
 </div><br/>
@@ -26,6 +26,7 @@ You can install poci with NPM or PNPM or YARN or Script :
 Poci is a JavaScript Library for rendering a data  
 
 ## Example
+### 1
 ```html
 <div id="root">
    <p>My name is {{name}}</p>
@@ -36,6 +37,23 @@ Poci is a JavaScript Library for rendering a data
    }, "#root");
 </script>
 ```  
+
+### 2
+```html
+<div id="root">
+  <h1>{{ date }}</h1>
+</div>
+<script>
+  const App = new Poci.Init({
+     date:""
+  }, "#root");
+
+  setInterval(()=>{
+     App.set("date", new
+     Date().toString());
+  },1000);
+</script>
+```
 [Learn More](poci.netfliy.app/docs)
 ## License
 MIT
