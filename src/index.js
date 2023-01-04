@@ -1,4 +1,5 @@
 import { generateVDOM } from "./vdom.js";
+import track from "./track.js";
 import PociError from "./error.js";
 
 export class Init{
@@ -21,26 +22,17 @@ export class Init{
         this.#data = data;
         this.data = data;
     }
-
-    #track(dom, vdom){
-        if(vdom === null || vdom === undefined) return generateVDOM(dom);
-        const {attributes} = dom;
-        if(vdom.$$label !== dom.dataset.label || dom.tagName.toLocaleLowerCase() !== vdom.name) return generateVDOM(dom);
-
-        for(const attribute of Object.keys(attributes)){
-            const result = vdom.props.filter(prop => prop.name !== attribute.name && attribute.name !== "data-label");
-            if(result.length !== 0) return generateVDOM(dom);
-        }
-        let index = 0;
-        for(const child of dom.childNodes){
-            if(child.nodeType === Node.TEXT_NODE && index >= vdom.children.length) continue;
-            vdom.children[index] = this.#track(child, vdom.children[index]);
-            index++;
-        }
+    
+    set(key, value){
+        this.#data[key] = value;
+        this.data = {...this.#data};
+        this.rerender();
     }
 
+    rerender(){}
+
     track(){
-        this.#originalVDOM = this.#track(this.rootDOM, this.#originalVDOM);
+        this.#originalVDOM = track(this.rootDOM, this.#originalVDOM);
     }
 
     /**
