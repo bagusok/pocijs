@@ -1,4 +1,5 @@
 // @ts-check
+import map from "./helper/map.js";
 import randomInt from "./helper/randomInt.js";
 
 /**
@@ -87,18 +88,20 @@ class VText extends VNode{
  */
 export function generateVDOM(root)
 {
+    let label = (new Date().getTime() * randomInt(1, 50)).toString(36);
+
     // generate props
-    let props = new Array(
-        Object.keys(root.attributes).length
-    );
-    for(let index = 0; index < props.length; index++){
+    const props = map(Object.keys(root.attributes), (index) => {
         const value = root.attributes[index];
-        props[index] = 
-            new VAttribute(value.nodeName, value.nodeValue);
-    }
+        if(value.nodeName === "data-label") {
+            // @ts-ignore
+            label = value.nodeValue;
+            return null;
+        }
+        return new VAttribute(value.nodeName, value.nodeValue);
+    });
 
     // generate label
-    const label = (new Date().getTime() * randomInt(1, 50)).toString(36);
     const vdom = new VElement(root.tagName.toLocaleLowerCase(), [], props, label);
     // @ts-ignore
     root.dataset.label = label;
