@@ -6,7 +6,7 @@
 export default class PociError extends Error{
     /**
      * @param {string} msg 
-     * @param {"ParameterInvalid"} type 
+     * @param {string} type 
      */
     constructor(msg, type){
         super(`[error] : ${msg}<${type}>`);
@@ -14,5 +14,6 @@ export default class PociError extends Error{
         this.type = type;
     }
 
-    static ParameterInvalid = "ParameterInvalid";
+    static ParameterInvalid = "ParameterNotValid";
+    static ExpressionInvalid = "ExpressionNotValid";
 }

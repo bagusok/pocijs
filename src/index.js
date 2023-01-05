@@ -3,6 +3,7 @@
 import { generateVDOM } from "./vdom.js";
 import track from "./track.js";
 import PociError from "./error.js";
+import evaluateExpression from "./evaluate-expression.js";
 
 export class Init{
     #virtualDOM;
@@ -37,7 +38,8 @@ export class Init{
     set(key, value){
         this.#data[key] = value;
         this.data = {...this.#data};
-        this.rerender();
+
+        this.#virtualDOM = evaluateExpression(this.#originalVDOM, this.#data);
     }
 
     track(){

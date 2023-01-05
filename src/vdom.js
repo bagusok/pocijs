@@ -7,7 +7,7 @@ import randomInt from "./helper/randomInt.js";
 /**
  * node
  */
-class VNode{
+export class VNode{
     /**
      * @param {string} type 
      * @param {string} name 
@@ -23,19 +23,19 @@ class VNode{
      * element type
      * @typedef {string}
      */
-    static element = "element";
+    static element = "Element";
 
     /**
      * properties type
      * @typedef {string}
      */
-    static props = "properties";
+    static props = "Properties";
     
     /**
      * text node type
      * @typedef {string}
      */
-    static text = "textNode";
+    static text = "TextNode";
 }
 
 /**
