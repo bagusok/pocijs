@@ -7,13 +7,15 @@ import randomInt from "./helper/randomInt.js";
 /**
  * node
  */
-export class VNode{
+export class VNode
+{
     /**
      * @param {string} type 
      * @param {string} name 
      * @param {string|null} content
      */
-    constructor(type, name, content){
+    constructor(type, name, content)
+    {
         this.type = type;
         this.name = name;
         this.content = content;
@@ -42,14 +44,17 @@ export class VNode{
  * element
  * @extends VNode
  */
-class VElement extends VNode{
+class VElement extends VNode
+{
     /**
      * 
      * @param {string} name 
      * @param {Array<VNode>} children
      * @param {Array<VAttribute>} props 
+     * @param {string} label
      */
-    constructor(name, children, props, label){
+    constructor(name, children, props, label)
+    {
         super(VNode.element, name, null);
         this.$$label = label;
         this.props = props;
@@ -61,12 +66,14 @@ class VElement extends VNode{
  * attribute
  * @extends VNode
  */
-class VAttribute extends VNode{
+class VAttribute extends VNode
+{
     /**
      * @param {string} key 
      * @param {string|null} content 
      */
-    constructor(key, content) {
+    constructor(key, content) 
+    {
         super(VNode.props, key, content ?? "");
         
     }
@@ -75,11 +82,13 @@ class VAttribute extends VNode{
 /**
  * text node
  */
-class VText extends VNode{
+class VText extends VNode
+{
     /**
      * @param {string|null} content
      */
-    constructor(content) {
+    constructor(content) 
+    {
         super(VNode.text, "", content ?? "");
     }
 }

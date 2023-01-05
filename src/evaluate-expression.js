@@ -17,7 +17,8 @@ const CURLY_BRACKET_PATTERN = /{{(.+?)}}/;
  * @param {Object} data 
  * @returns {*}
  */
-function evaluateSingleExpresssion(expression, data){
+function evaluateSingleExpresssion(expression, data)
+{
     expression = expression.replace(/\s+/g, "");
     if(!EXPRESSION_PATTERN.test(expression))
         throw new PociError(`${expression} is not expression`, PociError.ExpressionInvalid);
@@ -57,7 +58,8 @@ function evaluateSingleExpresssion(expression, data){
  * @param {Object} data 
  * @returns {string}
  */
-function evaluateMultiExpression(text, data){
+function evaluateMultiExpression(text, data)
+{
     while(CURLY_BRACKET_PATTERN.test(text)){
         const [, expression] = CURLY_BRACKET_PATTERN.exec(text);
         const result = evaluateSingleExpresssion(expression, data);
@@ -73,7 +75,8 @@ function evaluateMultiExpression(text, data){
  * @param {object} data 
  * @returns {object}
  */
-export default function evaluateExpressionVDOM(vdom, data){
+export default function evaluateExpressionVDOM(vdom, data)
+{
     // evaluate properties
     vdom.props = map(vdom.props, prop => {
         prop.content = evaluateMultiExpression(prop.content, data);

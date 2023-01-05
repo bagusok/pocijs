@@ -9,7 +9,8 @@ import { generateVDOM } from "./vdom.js";
  * @param {Object} vdom 
  * @returns 
  */
-export default function track(dom, vdom){
+export default function track(dom, vdom)
+{
     const isVDOMNull = vdom === null || vdom === undefined;
     const isLabelEqual = vdom.$$label === dom.dataset.label;
     const isTagNameEqual = dom.tagName.toLocaleLowerCase() === vdom.name;

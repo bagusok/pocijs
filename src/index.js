@@ -5,7 +5,8 @@ import track from "./track.js";
 import PociError from "./error.js";
 import evaluateExpression from "./evaluate-expression.js";
 
-export class Init{
+export class Init
+{
     #virtualDOM;
     #originalVDOM;
     #data;
@@ -14,7 +15,8 @@ export class Init{
      * @param {string} rootSelector 
      * @param {Object} data 
      */
-    constructor(rootSelector, data = {}) {
+    constructor(rootSelector, data = {}) 
+    {
         this.rootSelector = rootSelector;
         this.rootDOM = document.querySelector(rootSelector);
 
@@ -35,21 +37,24 @@ export class Init{
      * @param {string} key 
      * @param {*} value 
      */
-    set(key, value){
+    set(key, value)
+    {
         this.#data[key] = value;
         this.data = {...this.#data};
 
         this.#virtualDOM = evaluateExpression(this.#originalVDOM, this.#data);
     }
 
-    track(){
+    track()
+    {
         this.#originalVDOM = track(this.rootDOM, this.#originalVDOM);
     }
 
     /**
      * @param {Element} root 
      */
-    #removeLabel(root = this.rootDOM){
+    #removeLabel(root = this.rootDOM)
+    {
         root.removeAttribute("data-label", "");
         for(let index = 0; index < root.children.length; index++)
             this.#removeLabel(root.children[index]);
@@ -58,7 +63,8 @@ export class Init{
     /**
      * remove poci in the element
      */
-    pull(){
+    pull()
+    {
         this.#removeLabel();
         this.rootSelector = "";
         this.rootDOM = null;
