@@ -32,7 +32,7 @@ Poci is a JavaScript Library for rendering a data
    <p>My name is {{ name }}</p>
 </div>
 <script>
-   const App = new Poci.Init( "#root", {
+   const App = new Poci.Init("#root", {
      name:"Zen"
    });
 </script>
@@ -41,17 +41,17 @@ Poci is a JavaScript Library for rendering a data
 ### 2
 ```html
 <div id="root">
-  <h1>{{ date }}</h1>
+   <h1>{{ date }}</h1>
 </div>
 <script>
-  const App = new Poci.Init("#root", {
-     date:""
-  });
+   const App = new Poci.Init("#root", {
+      date:""
+   });
 
-  setInterval(()=>{
-     App.set("date", new
-     Date().toString());
-  },1000);
+   setInterval(()=>{
+      const time = new Date().toString();
+      App.set("date", time);
+   },1000);
 </script>
 ```
 [Learn More](poci.netfliy.app/docs)

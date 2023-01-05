@@ -18,10 +18,11 @@ const CURLY_BRACKET_PATTERN = /{{(.+?)}}/;
  * @returns {*}
  */
 function evaluateSingleExpresssion(expression, data){
+    expression = expression.replace(/\s+/g, "");
     if(!EXPRESSION_PATTERN.test(expression))
         throw new PociError(`${expression} is not expression`, PociError.ExpressionInvalid);
 
-    const units = expression.replace(/\s+/g, "").split("->");
+    const units = expression.split("->");
     let value = {...data};
 
     
