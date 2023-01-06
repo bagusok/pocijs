@@ -2,24 +2,21 @@
 
 # Poci
 License : MIT  
-Poci is a JavaScript Library for **rendering a data** with size < 5kb    
+Poci is a JavaScript Library for **rendering a data**    
 ```npm install poci```
 
 </div><br/>
 
 ## Install
-You can install poci with NPM or PNPM or YARN or Script :   
+You can install poci with NPM or Script :   
 ### NPM
 ```npm install poci```   
 
-### PNPM
-```pnpm add poci```   
-
-### YARN
-```yarn install poci```   
-
 ### Script
-```<script src=""></script>```
+```<script src=""></script>```  
+
+! not recommended for production !
+
 </div>
 
 ## About
@@ -49,11 +46,13 @@ Poci is a JavaScript Library for rendering a data
    });
 
    setInterval(()=>{
-      const time = new Date().toString();
+      const time = new Date().toDateString();
       App.set("date", time);
    },1000);
 </script>
 ```
+
 [Learn More](poci.netfliy.app/docs)
+
 ## License
 MIT
