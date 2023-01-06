@@ -1,12 +1,15 @@
 // @ts-check
 
-import { VNode } from "./vdom";
+import { VNode } from "./vdom.js";
 
 export default function convertVDOMToDOM(vdom)
 {
     /**
      * @type {Element}
      */
+    if(vdom.type === VNode.text)
+        return document.createTextNode(vdom.content)
+
     const root = document.createElement(vdom.name);
     for(const prop of vdom.props)
         root.setAttribute(prop.name, prop.content);

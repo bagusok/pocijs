@@ -1,6 +1,6 @@
 "use strict";
 
-import { generateVDOM } from "./vdom.js";
+import { generateVDOM, VNode } from "./vdom.js";
 import track from "./track.js";
 import PociError from "./error.js";
 import convertVDOMToDOM from "./convert-vdom-to-dom.js";
@@ -18,7 +18,6 @@ export class Init
      */
     constructor(rootSelector, data = {}) 
     {
-        this.rootSelector = rootSelector;
         this.rootDOM = document.querySelector(rootSelector);
 
         // validate parameters
@@ -32,6 +31,51 @@ export class Init
         this.#virtualDOM = generateVDOM(this.rootDOM);
         this.#data = data;
         this.data = data;
+
+        this.render();
+    }
+
+
+    /**
+     * @param {Element} DOM
+     */
+    #render(rootOldVDOM, rootNewVDOM, DOM)
+    {
+        for(const index in rootNewVDOM.children){
+            const newChild = rootNewVDOM.children[index];
+            const oldChild = rootOldVDOM.children[index];
+            const DOMChild = DOM.childNodes[index];
+            
+            if(newChild.type === VNode.element){
+                this.#render(oldChild, newChild, DOMChild);
+            }else if(newChild.type === VNode.text && newChild.content !== oldChild.content){
+                DOMChild.nodeValue = newChild.content;
+            }
+        }
+
+        let index = 0;
+        for(const oldProp of rootOldVDOM.props){
+            if(oldProp == null) continue;
+            
+            const newProp = rootNewVDOM.props[index];
+            
+            if(oldProp.content !== newProp.content){
+                DOM.parentElement.replaceChild(
+                    convertVDOMToDOM(rootNewVDOM),
+                    DOM,
+                );
+                return true;
+            }
+
+            
+            index++;
+        }
+    }
+
+    render(){
+        const newDOM = evaluateExpression(this.#originalVDOM, this.#data);
+        this.#render(this.#virtualDOM, newDOM, this.rootDOM);
+        this.#virtualDOM = newDOM;
     }
 
     /**
@@ -42,12 +86,7 @@ export class Init
     {
         this.#data[key] = value;
         this.data = {...this.#data};
-        this.#virtualDOM = evaluateExpression(this.#originalVDOM, this.#data);
-        this.rootDOM.parentNode.replaceChild(
-            convertVDOMToDOM(this.#virtualDOM),
-            this.rootDOM,
-        );
-        this.rootDOM = document.querySelector(this.rootSelector);
+        this.render();
         
     }
 

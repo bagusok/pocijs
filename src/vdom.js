@@ -2,7 +2,6 @@
 "use strict";
 
 import map from "./helper/map.js";
-import randomInt from "./helper/randomInt.js";
 
 /**
  * node
@@ -51,12 +50,10 @@ class VElement extends VNode
      * @param {string} name 
      * @param {Array<VNode>} children
      * @param {Array<VAttribute>} props 
-     * @param {string} label
      */
-    constructor(name, children, props, label)
+    constructor(name, children, props)
     {
         super(VNode.element, name, null);
-        this.$$label = label;
         this.props = props;
         this.children = children;
     }
@@ -99,23 +96,15 @@ class VText extends VNode
  */
 export function generateVDOM(root)
 {
-    let label = (new Date().getTime() * randomInt(1, 50)).toString(36);
 
     // generate props
     const props = map(Object.keys(root.attributes), (index) => {
         const value = root.attributes[index];
-        if(value.nodeName === "data-label") {
-            // @ts-ignore
-            label = value.nodeValue;
-            return null;
-        }
         return new VAttribute(value.nodeName, value.nodeValue);
     });
 
     // generate label
-    const vdom = new VElement(root.tagName.toLocaleLowerCase(), [], props, label);
-    // @ts-ignore
-    root.dataset.label = label;
+    const vdom = new VElement(root.tagName.toLocaleLowerCase(), [], props);
 
     // generate velement or vtext
     for(const child of root.childNodes){

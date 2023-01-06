@@ -80,6 +80,7 @@ export default function evaluateExpressionVDOM(vdom, data)
     vdom = JSON.parse(JSON.stringify(vdom));
     // evaluate properties
     vdom.props = map(vdom.props, prop => {
+        if(prop === null) return null;
         prop.content = evaluateMultiExpression(prop.content, data);
         return prop;
     });

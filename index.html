@@ -1,15 +1,20 @@
 <div id="root">
+   {{seconds}}
     <h1>{{ seconds}}</h1>
+    <h1>{{ seconds}}</h1>
+    <h1>{{ seconds}}</h1>
+    <h1>{{ seconds}}</h1>
+    <input type="text">
  </div>
- <script src="./public/index.js"></script>
- <script>
-    const App = new Poci.Init("#root", {
+
+ <script type="module">
+   import {Init} from "./src/index.js";
+    const App = new Init("#root", {
        seconds:""
     });
- 
-    setInterval(()=>{
-       const time = new Date().getSeconds();
-       console.info(time);
-       App.set("seconds", time);
-    },1000);
+
+    setInterval(() => {
+       App.set("seconds", new Date().getSeconds());
+    }, 1000);
+    console.info(App);
  </script>
