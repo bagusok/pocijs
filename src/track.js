@@ -1,20 +1,20 @@
-// @ts-ignore
+// @ts-check
 "use strict";
 
-import { generateVDOM } from "./vdom.js";
+import { generateVDOM, VElement } from "./vdom.js";
 
 /**
  * track changes in real dom
  * @param {Element} dom 
- * @param {Object} vdom 
+ * @param {VElement} vdom 
  * @returns 
  */
 export default function track(dom, vdom)
 {
+    // generate new dom if the root of real dom changes
     const isVDOMNull = vdom === null || vdom === undefined;
-    const isLabelEqual = vdom.$$label === dom.dataset.label;
     const isTagNameEqual = dom.tagName.toLocaleLowerCase() === vdom.name;
-    if(isVDOMNull || !isLabelEqual || !isTagNameEqual) return generateVDOM(dom);
+    if(isVDOMNull || !isTagNameEqual) return generateVDOM(dom);
 
     // track changes of properties
     const { attributes } = dom;
@@ -22,14 +22,12 @@ export default function track(dom, vdom)
     const { props } = vdom;
 
     for(const attribute of attributesValue){
-        const result = (() => {
-            for(const prop of props){
-                if(attribute.nodeName === "data-label" || prop === null) continue;
+        const isAttributeSame = (() => {
+            for(const prop of props)
                 if(prop.name !== attribute.nodeName) return false;
-            }
         })();
 
-        if(result === false) return generateVDOM(dom);
+        if(isAttributeSame === false) return generateVDOM(dom);
     }
 
     // track changes of children
@@ -38,6 +36,7 @@ export default function track(dom, vdom)
         const isChildTextNode = child.nodeType === Node.TEXT_NODE;
         if(isChildTextNode || index >= vdom.children.length) continue;
         
+        // @ts-ignore
         vdom.children[index] = track(child, vdom.children[index]);
         index++;
     }

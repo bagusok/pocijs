@@ -3,48 +3,54 @@
 
 import PociError from "./error.js";
 import map from "./helper/map.js";
-import { VNode } from "./vdom.js";
+import { VElement, VNode, VText } from "./vdom.js";
 
-const EXPRESSION_PATTERN = /^((\w+|\w+\[(\d+)\])(->)?)*$/;
-const WORD_PATERN = /^\w+$/;
-const ARRAY_ACCESS_PATERN = /^((\w+)\[(\d+)\])$/;
+const HOOK_EXPRESSION = /^((\w+|\w+\[(\d+)\])(->)?)*$/;
+const WORD = /^\w+$/;
+const ARRAY_ACCESS = /^((\w+)\[(\d+)\])$/;
 const CURLY_BRACKET_PATTERN = /{{(.+?)}}/;
 
 
 /**
  * expression evaluator
  * @param {string} expression 
- * @param {Object} data 
+ * @param {object} modelGroup 
  * @returns {*}
  */
-function evaluateSingleExpresssion(expression, data)
+function getModelFromHookExpression(expression, modelGroup)
 {
-    expression = expression.replace(/\s+/g, "");
-    if(!EXPRESSION_PATTERN.test(expression))
-        throw new PociError(`${expression} is not expression`, PociError.ExpressionInvalid);
+    expression = expression.replace(/\s+/g, ""); // remove space in the expression
 
+    // validate
+    if(!HOOK_EXPRESSION.test(expression))
+        throw new PociError(`${expression} is not hook expression`, PociError.HookExpressionInvalid);
+
+    // split expression
     const units = expression.split("->");
-    let value = {...data};
+    let value = {...modelGroup};
 
-    
     for(const unit of units){
-        if(WORD_PATERN.test(unit)){
+        if(WORD.test(unit)){
             // is value exits
             const isObjectKeysExits = Object.keys(value).indexOf(unit) !== -1;
+
+            // validate
             if(!isObjectKeysExits)
-                throw new PociError(`${unit} is not found`, PociError.ExpressionInvalid);
+                throw new PociError(`${unit} is not found`, PociError.HookExpressionInvalid);
             
             value = value[unit];
         }else{
             // @ts-ignore
-            const [ ,, name, index  ] = ARRAY_ACCESS_PATERN.exec(unit);
+            const [ ,, name, index  ] = ARRAY_ACCESS.exec(unit);
 
             // is value exits
             const isObjectKeysExits = Object.keys(value).indexOf(name) !== -1;
             const isValueArray = Array.isArray(value[name]);
             const isIndexExits = value[name].length > index;
+
+            // validate
             if(!isObjectKeysExits || !isValueArray || !isIndexExits)
-                throw new PociError(`${unit} is not found`, PociError.ExpressionInvalid);
+                throw new PociError(`${unit} is not found`, PociError.HookExpressionInvalid);
             
             value = value[name][index];
         }
@@ -55,14 +61,15 @@ function evaluateSingleExpresssion(expression, data)
 
 /**
  * @param {string} text 
- * @param {Object} data 
+ * @param {Object} modelGroup 
  * @returns {string}
  */
-function evaluateMultiExpression(text, data)
+function evaluateAllExpression(text, modelGroup)
 {
+    // evaluate all expression
     while(CURLY_BRACKET_PATTERN.test(text)){
         const [, expression] = CURLY_BRACKET_PATTERN.exec(text);
-        const result = evaluateSingleExpresssion(expression, data);
+        const result = getModelFromHookExpression(expression, modelGroup);
 
         text = text.replace(CURLY_BRACKET_PATTERN, result);
     }
@@ -71,26 +78,29 @@ function evaluateMultiExpression(text, data)
 }
 
 /**
- * @param {object} vdom 
- * @param {object} data 
- * @returns {object}
+ * evaluate all expression in virtual DOM
+ * @param {VElement} vdom 
+ * @param {object} modelGroup 
+ * @returns {VElement}
  */
-export default function evaluateExpressionVDOM(vdom, data)
+export default function evaluateExpressionVDOM(vdom, modelGroup)
 {
+    // copy the vdom
     vdom = JSON.parse(JSON.stringify(vdom));
+
     // evaluate properties
     vdom.props = map(vdom.props, prop => {
         if(prop === null) return null;
-        prop.content = evaluateMultiExpression(prop.content, data);
+        prop.content = evaluateAllExpression(prop.content, modelGroup);
         return prop;
     });
 
     // evaluate children
     vdom.children = map(vdom.children, child => {
         if(child.type === VNode.text)
-            child.content = evaluateMultiExpression(child.content, data);
+            child.content = evaluateAllExpression(child.content, modelGroup);
         else
-            child = evaluateExpressionVDOM(child, data);
+            child = evaluateExpressionVDOM(child, modelGroup);
         return child;
     });
 

@@ -1,26 +1,29 @@
-// @ts-check
+"use strict";
 
-import { VNode } from "./vdom.js";
+import { VElement, VNode, VText } from "./vdom.js";
 
+/**
+ * convert virtual dom to dom
+ * @param {VElement|VText} vdom 
+ * @returns {Element|Text}
+ */
 export default function convertVDOMToDOM(vdom)
 {
-    /**
-     * @type {Element}
-     */
+    
+    // if vdom is text generate text node
     if(vdom.type === VNode.text)
         return document.createTextNode(vdom.content)
 
+    // generate element
     const root = document.createElement(vdom.name);
-    for(const prop of vdom.props)
+
+    // generate attributes
+    for(const prop of vdom.props) 
         root.setAttribute(prop.name, prop.content);
+
+    // generate children    
+    for(const child of vdom.children)
+        root.appendChild(convertVDOMToDOM(child));
     
-    root.setAttribute("data-label", vdom.$$label);
-    
-    for(const child of vdom.children){
-        if(child.type === VNode.element)
-            root.appendChild(convertVDOMToDOM(child));
-        else
-            root.appendChild(document.createTextNode(child.content));
-    }
     return root;
 }

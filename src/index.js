@@ -1,46 +1,53 @@
 "use strict";
 
-import { generateVDOM, VNode } from "./vdom.js";
+import { generateVDOM, VElement, VNode } from "./vdom.js";
 import track from "./track.js";
 import PociError from "./error.js";
 import convertVDOMToDOM from "./convert-vdom-to-dom.js";
 import evaluateExpression from "./evaluate-expression.js";
 
+/**
+ * class for init the poci
+ */
 export class Init
 {
-    #virtualDOM;
-    #originalVDOM;
-    #data;
+    #vdom;
+    #template;
+    #modelGroup;
 
     /**
      * @param {string} rootSelector 
-     * @param {Object} data 
+     * @param {Object} modelGroup 
      */
-    constructor(rootSelector, data = {}) 
+    constructor(rootSelector, modelGroup = {}) 
     {
-        this.rootDOM = document.querySelector(rootSelector);
+        this.root = document.querySelector(rootSelector);
 
         // validate parameters
-        if(this.rootDOM === null)
+        if(this.root === null || this.root === null)
             throw new PociError("root is not found", PociError.ParameterInvalid);
-        else if(typeof data !== "object" || data === null || Array.isArray(data))
-            throw new PociError("data is not valid", PociError.ParameterInvalid);
+        else if(typeof modelGroup !== "object" || modelGroup === null || Array.isArray(modelGroup))
+            throw new PociError("modelGroup is not valid", PociError.ParameterInvalid);
         
-        
-        this.#originalVDOM = generateVDOM(this.rootDOM);
-        this.#virtualDOM = generateVDOM(this.rootDOM);
-        this.#data = data;
-        this.data = data;
+        // init properties
+        this.#template = generateVDOM(this.root);
+        this.#vdom = generateVDOM(this.root);
+        this.#modelGroup = modelGroup;
+        this.modelGroup = modelGroup;
 
+        // render
         this.render();
     }
 
 
     /**
      * @param {Element} DOM
+     * @param {VElement} rootNewVDOM
+     * @param {VElement} rootOldVDOM
      */
     #render(rootOldVDOM, rootNewVDOM, DOM)
     {
+        // render the children
         for(const index in rootNewVDOM.children){
             const newChild = rootNewVDOM.children[index];
             const oldChild = rootOldVDOM.children[index];
@@ -53,69 +60,68 @@ export class Init
             }
         }
 
-        let index = 0;
-        for(const oldProp of rootOldVDOM.props){
-            if(oldProp == null) continue;
-            
+        // render root
+        for(const index in rootOldVDOM.props){
+            const oldProp = rootOldVDOM.props[index];
             const newProp = rootNewVDOM.props[index];
             
+            // render the root if property value is not same
             if(oldProp.content !== newProp.content){
-                DOM.parentElement.replaceChild(
-                    convertVDOMToDOM(rootNewVDOM),
-                    DOM,
-                );
-                return true;
+                DOM.parentElement.replaceChild(convertVDOMToDOM(rootNewVDOM), DOM);
+                return null;
             }
-
-            
-            index++;
         }
     }
 
-    render(){
-        const newDOM = evaluateExpression(this.#originalVDOM, this.#data);
-        this.#render(this.#virtualDOM, newDOM, this.rootDOM);
-        this.#virtualDOM = newDOM;
+    /**
+     * render element
+     */
+    render()
+    {
+        // geerate new dom
+        const newDOM = evaluateExpression(this.#template, this.#modelGroup);
+
+        // render
+        this.#render(this.#vdom, newDOM, this.root);
+
+        // update vdom
+        this.#vdom = newDOM;
     }
 
     /**
+     * set key
      * @param {string} key 
      * @param {*} value 
      */
     set(key, value)
     {
-        this.#data[key] = value;
-        this.data = {...this.#data};
+        // update
+        this.#modelGroup[key] = value;
+        this.modelGroup = {...this.#modelGroup};
+
+        // render
         this.render();
         
     }
 
+    /**
+     * track changes in real dom
+     */
     track()
     {
-        this.#originalVDOM = track(this.rootDOM, this.#originalVDOM);
+        this.#template = track(this.root, this.#template);
     }
 
-    /**
-     * @param {Element} root 
-     */
-    #removeLabel(root = this.rootDOM)
-    {
-        root.removeAttribute("data-label", "");
-        for(let index = 0; index < root.children.length; index++)
-            this.#removeLabel(root.children[index]);
-    }
 
     /**
      * remove poci in the element
      */
     pull()
     {
-        this.#removeLabel();
-        this.rootSelector = "";
-        this.rootDOM = null;
-        this.#originalVDOM = {};
-        this.#virtualDOM = {};
-        this.#data = {};
-        this.data = {};
+        this.root = null;
+        this.#template = null;
+        this.#vdom = null;
+        this.#modelGroup = null;
+        this.modelGroup = null;
     }
 }

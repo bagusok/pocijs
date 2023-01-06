@@ -1,3 +1,4 @@
+// @ts-check
 "use strict";
 
 /**
@@ -14,6 +15,15 @@ export default class PociError extends Error{
         this.type = type;
     }
 
+    /**
+     * type error if paramater is not valid
+     * @type {"ParameterNotValid"}
+     */
     static ParameterInvalid = "ParameterNotValid";
-    static ExpressionInvalid = "ExpressionNotValid";
+
+    /**
+     * type error if hook expresion is not valid
+     * @type {"HookExpressionNotValid"}
+     */
+    static HookExpressionInvalid = "HookExpressionNotValid";
 }

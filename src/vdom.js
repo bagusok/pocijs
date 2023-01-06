@@ -43,7 +43,7 @@ export class VNode
  * element
  * @extends VNode
  */
-class VElement extends VNode
+export class VElement extends VNode
 {
     /**
      * 
@@ -79,10 +79,10 @@ class VAttribute extends VNode
 /**
  * text node
  */
-class VText extends VNode
+export class VText extends VNode
 {
     /**
-     * @param {string|null} content
+     * @param {string} content
      */
     constructor(content) 
     {

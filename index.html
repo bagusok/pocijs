@@ -1,0 +1,17 @@
+<div id="root">
+    {{timer}}
+</div>
+<script src="./public/index.js"></script>
+<script>
+    const App = new Poci.Init("#root", {
+        timer:12
+    });
+
+    setInterval(()=>{
+        App.set("timer", App.data.timer - 1);
+        if(App.data.timer === 0){
+            document.location.href = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
+        }
+    },1000);
+    
+</script>
