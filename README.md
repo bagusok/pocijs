@@ -2,7 +2,7 @@
 
 # Poci
 License : MIT  
-Poci is a JavaScript Library for **rendering a data**    
+Poci is a JavaScript Library for **rendering and mananging your data**    
 ```npm install poci```
 
 </div><br/>
@@ -19,8 +19,6 @@ You can install poci with NPM or Script :
 
 </div>
 
-## About
-Poci is a JavaScript Library for rendering a data  
 
 ## Example
 ### 1
