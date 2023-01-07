@@ -8,11 +8,14 @@
     "test": "test"
   },
   "scripts": {
-    "build":"npx webpack"
+    "build": "npx webpack"
   },
   "author": "zen",
   "license": "MIT",
   "devDependencies": {
+    "@babel/core": "^7.20.12",
+    "@babel/preset-env": "^7.20.2",
+    "babel-loader": "^9.1.2",
     "eslint": "^8.31.0",
     "terser-webpack-plugin": "^5.3.6",
     "webpack": "^5.75.0",
