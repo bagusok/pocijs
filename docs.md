@@ -7,7 +7,7 @@ example :
 i learn a {{library}}
 </div>
 <script>
-  new Poci.Init("div", {
+  const root = new Poci.Init("div", {
     library:"Poci"
   });
 </script>
@@ -30,7 +30,10 @@ npm install poci
 ```
 
 ## Poci.Init
-After install Poci with NPM or Script, you need init the Poci   
+After install Poci with NPM or Script, you need to init the Poci   
 ```js
-const Name = new Poci.Init(selector, models);
-```
+const Name = new Poci.Init(rootSelector : string, models : object);
+```  
+note : Meaning of model is data  
+
+## Hook Expression
