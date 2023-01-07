@@ -18,7 +18,7 @@ npm install poci
 ```html
 <script src="https://cdn.jsdelivr.net/npm/poci@1.0.0-beta/dist/index.js"></script>
 ```  
-not recommended for production
+
 </div>
 
 
