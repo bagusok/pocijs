@@ -2,7 +2,7 @@
   "name": "poci",
   "version": "1.0.0-beta",
   "description": "pocijs is javascript library for rendering and mananging your data",
-  "main": "./dist/index.js",
+  "main": "./dist/main.mjs",
   "scripts": {
     "build": "npx webpack"
   },

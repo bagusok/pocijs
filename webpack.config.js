@@ -4,14 +4,15 @@ const path = require("path");
 module.exports = {
     mode:"production",
     entry:"./src/index.js",
+    experiments: {
+      outputModule: true,
+    },      
     output:{
         path:path.resolve(__dirname, "dist"),
-        filename:"index.js",
-        globalObject: 'this',
         library: {
-            name: 'Poci',
-            type: 'umd',
-        }
+          type: "module",
+        },
+        clean: true
     },
     optimization: {
         minimize: true,

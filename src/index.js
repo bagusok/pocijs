@@ -9,7 +9,7 @@ import render from "./render.js";
 /**
  * class for init the poci
  */
-export class Init
+class Init
 {
     #vdom;
     #template;
@@ -170,3 +170,7 @@ export class Init
         this.#actionForConnectionElement = null;
     }
 }
+
+export default {
+    Init
+};

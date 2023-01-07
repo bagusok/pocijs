@@ -26,7 +26,11 @@ npm install poci
 
 ### Script
 ```html
-<script src="https://cdn.jsdelivr.net/npm/poci@1.0.0-beta/dist/index.js"></script>
+```html
+<script type="module">
+   import Poci from "https://cdn.jsdelivr.net/npm/poci@1.0.0-beta/dist/main.mjs";
+</script>
+```  
 ```
 
 ## Poci.Init
