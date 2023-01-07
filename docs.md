@@ -28,7 +28,7 @@ npm install poci
 ```html
 ```html
 <script type="module">
-   import Poci from "https://cdn.jsdelivr.net/npm/poci@1.0.0-beta/dist/main.mjs";
+   import Poci from "https://cdn.jsdelivr.net/npm/poci@1.0.1-beta/dist/main.mjs";
 </script>
 ```  
 ```
