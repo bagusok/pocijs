@@ -6,7 +6,7 @@
   "scripts": {
     "build": "npx webpack"
   },
-  "author": "zen",
+  "author": "noki-noki",
   "license": "MIT",
   "devDependencies": {
     "@babel/core": "^7.20.12",
