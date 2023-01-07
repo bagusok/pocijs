@@ -81,29 +81,6 @@ Root.pull();
 Root.set("name", "John"); // Error
 ```
 
-## Poci.Init.normalize
-normalize is method for creating root element and the children back to normal  
-```js
-const Name = new Poci.Init(rootSelector : string, models : object);
-Name.normalize();
-```  
-example :
-```html
-<div id="root">
-  {{name}}
-</div>
-<script>
-  const Root = new Poci.Init("#root", {
-     name:null
-  });
-  Root.normalize();
-</script>
-```  
-result :
-```
-{{name}}
-```  
-
 ## Poci.Init.track
 track is method for tracking change on root element and the children   
 ```js
@@ -136,6 +113,7 @@ For create connection you just add ```data-connectFor``` Attribute to the elemen
 ```
 data-connectFor="key"
 ```   
+note : resulting value will be of type string
 
 ### Listen the connection
 you can run a function when key change  
