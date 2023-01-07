@@ -54,5 +54,8 @@ npm install poci
 
 [Learn More](./docs.md)
 
+## Donate
+Saweria : https://saweria.co/nokinoki
+
 ## License
 MIT
