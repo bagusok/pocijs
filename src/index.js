@@ -44,6 +44,13 @@ export class Init
                 "input[data-connectFor], textarea[data-connectFor], select[data-connectFor]"
             )
         );
+
+        const isRootInputElement = ["textarea", "input", "select"].indexOf(this.root.nodeName.toLocaleLowerCase()) !== -1;
+        if(isRootInputElement && this.root.dataset.connectfor !== undefined){
+            this.#connect(
+                [this.root]
+            );
+        }
     }
 
     #actionForConnectionElement = ({target:el})=>{
@@ -146,14 +153,19 @@ export class Init
      */
     pull()
     {
+        // remove property
         this.root = null;
         this.#template = null;
         this.#vdom = null;
         this.#modelGroup = null;
         this.modelGroup = null;
         this.#listenerStack = null;
+
+        // remove connection
         for(const [element] of Object.values(this.#connection))
             element.removeEventListener("input", this.#actionForConnectionElement);
+        
+        // remove property
         this.#connection = null;
         this.#actionForConnectionElement = null;
     }

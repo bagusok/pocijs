@@ -2,6 +2,7 @@
 "use strict";
 
 import PociError from "./error.js";
+import convertDataToString from "./helper/convertDataToString.js";
 import map from "./helper/map.js";
 import { VElement, VNode, VText } from "./vdom.js";
 
@@ -14,10 +15,10 @@ const CURLY_BRACKET_PATTERN = /{{(.+?)}}/;
 /**
  * expression evaluator
  * @param {string} expression 
- * @param {object} modelGroup 
+ * @param {object} models 
  * @returns {*}
  */
-function getModelFromHookExpression(expression, modelGroup)
+function getModelFromHookExpression(expression, models)
 {
     expression = expression.replace(/\s+/g, ""); // remove space in the expression
 
@@ -27,7 +28,7 @@ function getModelFromHookExpression(expression, modelGroup)
 
     // split expression
     const units = expression.split("->");
-    let value = {...modelGroup};
+    let value = {...models};
 
     for(const unit of units){
         if(WORD.test(unit)){
@@ -56,20 +57,20 @@ function getModelFromHookExpression(expression, modelGroup)
         }
     }
 
-    return value;
+    return convertDataToString(value);
 }
 
 /**
  * @param {string} text 
- * @param {Object} modelGroup 
+ * @param {Object} models 
  * @returns {string}
  */
-function evaluateAllExpression(text, modelGroup)
+function evaluateAllExpression(text, models)
 {
     // evaluate all expression
     while(CURLY_BRACKET_PATTERN.test(text)){
         const [, expression] = CURLY_BRACKET_PATTERN.exec(text);
-        const result = getModelFromHookExpression(expression, modelGroup);
+        const result = getModelFromHookExpression(expression, models);
 
         text = text.replace(CURLY_BRACKET_PATTERN, result);
     }
@@ -80,28 +81,28 @@ function evaluateAllExpression(text, modelGroup)
 /**
  * evaluate all expression in virtual DOM
  * @param {VElement} vdom 
- * @param {object} modelGroup 
+ * @param {object} models 
  * @returns {VElement}
  */
-export default function evaluateExpressionVDOM(vdom, modelGroup)
+export default function evaluateExpressionVDOM(vdom, models)
 {
     // copy the vdom
     vdom = JSON.parse(JSON.stringify(vdom));
 
     // evaluate properties
     vdom.props = map(vdom.props, prop => {
-        if(prop.name === "data-connectfor") return prop;
+        if(prop.name === "data-connectfor" && ["input", "textarea", "select"].indexOf(vdom.name) !== -1) return prop;
 
-        prop.content = evaluateAllExpression(prop.content, modelGroup);
+        prop.content = evaluateAllExpression(prop.content, models);
         return prop;
     });
 
     // evaluate children
     vdom.children = map(vdom.children, child => {
         if(child.type === VNode.text)
-            child.content = evaluateAllExpression(child.content, modelGroup);
+            child.content = evaluateAllExpression(child.content, models);
         else
-            child = evaluateExpressionVDOM(child, modelGroup);
+            child = evaluateExpressionVDOM(child, models);
         return child;
     });
 
