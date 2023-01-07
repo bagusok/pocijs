@@ -10,10 +10,10 @@ PociJS is a JavaScript Library for **rendering and mananging your data**
 ## Install
 You can install PociJS with NPM or Script :   
 ### NPM
-```npm install pocijs```   
+```npm install poci```   
 
 ### Script
-```<script src=""></script>```  
+```<script src="https://cdn.jsdelivr.net/npm/poci@1.0.0-beta/dist/index.js"></script>```  
 
 ! not recommended for production !
 

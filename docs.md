@@ -21,12 +21,12 @@ i learn a Poci
 you can install PociJS with NPM or Script  
 ### NPM
 ```
-npm install pocijs
+npm install poci
 ```
 
 ### Script
 ```html
-<script src=""></script>
+<script src="https://cdn.jsdelivr.net/npm/poci@1.0.0-beta/dist/index.js"></script>
 ```
 
 ## Poci.Init

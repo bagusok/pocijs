@@ -1,6 +1,6 @@
 {
-  "name": "pocijs",
-  "version": "1.0.0",
+  "name": "poci",
+  "version": "1.0.0-beta",
   "description": "pocijs is javascript library for rendering and mananging your data",
   "main": "./dist/index.js",
   "scripts": {
@@ -17,6 +17,10 @@
     "webpack": "^5.75.0",
     "webpack-cli": "^5.0.1"
   },
+  "keywords": [
+    "pocijs",
+    "poci"
+  ],
   "bugs": "https://github.com/noki2/pocijs/issues",
   "homepage": "https://github.com/noki2/pocijs",
   "repository": {
