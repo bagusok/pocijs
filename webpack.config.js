@@ -5,7 +5,7 @@ module.exports = {
     mode:"production",
     entry:"./src/index.js",
     output:{
-        path:path.resolve(__dirname, "public"),
+        path:path.resolve(__dirname, "dist"),
         filename:"index.js",
         globalObject: 'this',
         library: {

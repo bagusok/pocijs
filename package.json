@@ -1,12 +1,8 @@
 {
-  "name": "poci",
-  "module": "./public/index.js",
+  "name": "pocijs",
   "version": "1.0.0",
-  "description": "poci",
-  "main": "index.js",
-  "directories": {
-    "test": "test"
-  },
+  "description": "pocijs is javascript library for rendering and mananging your data",
+  "main": "./dist/index.js",
   "scripts": {
     "build": "npx webpack"
   },
@@ -20,5 +16,11 @@
     "terser-webpack-plugin": "^5.3.6",
     "webpack": "^5.75.0",
     "webpack-cli": "^5.0.1"
+  },
+  "bugs": "https://github.com/noki2/pocijs/issues",
+  "homepage": "https://github.com/noki2/pocijs",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/noki2/pocijs.git"
   }
 }
