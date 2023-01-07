@@ -1,16 +1,16 @@
 <div align="center">
 
-# Poci
+# PociJS
 License : MIT  
-Poci is a JavaScript Library for **rendering a data**    
+PociJS is a JavaScript Library for **rendering and mananging your data**    
 ```npm install poci```
 
 </div><br/>
 
 ## Install
-You can install poci with NPM or Script :   
+You can install PociJS with NPM or Script :   
 ### NPM
-```npm install poci```   
+```npm install pocijs```   
 
 ### Script
 ```<script src=""></script>```  
@@ -19,8 +19,6 @@ You can install poci with NPM or Script :
 
 </div>
 
-## About
-Poci is a JavaScript Library for rendering a data  
 
 ## Example
 ### 1
@@ -30,7 +28,7 @@ Poci is a JavaScript Library for rendering a data
 </div>
 <script>
    const App = new Poci.Init("#root", {
-     name:"Zen"
+     name:"John"
    });
 </script>
 ```  
@@ -52,7 +50,7 @@ Poci is a JavaScript Library for rendering a data
 </script>
 ```
 
-[Learn More](poci.netfliy.app/docs)
+[Learn More](./docs.md)
 
 ## License
 MIT
