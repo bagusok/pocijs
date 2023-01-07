@@ -28,7 +28,7 @@ You can install poci with NPM or Script :
 </div>
 <script>
    const App = new Poci.Init("#root", {
-     name:"Zen"
+     name:"John"
    });
 </script>
 ```  
