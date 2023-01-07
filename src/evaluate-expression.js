@@ -90,7 +90,8 @@ export default function evaluateExpressionVDOM(vdom, modelGroup)
 
     // evaluate properties
     vdom.props = map(vdom.props, prop => {
-        if(prop === null) return null;
+        if(prop.name === "data-connectfor") return prop;
+
         prop.content = evaluateAllExpression(prop.content, modelGroup);
         return prop;
     });
