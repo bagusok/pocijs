@@ -8,7 +8,7 @@ PociJS adalah sebuah JavaScript library untuk **rendering dan mengelola data**
 </div><br/>
 
 ## Install
-kamu bisa menggunakan NPM / CDN untuk menginstall poci   
+kita bisa menggunakan NPM / CDN untuk menginstall poci   
 ### NPM
 ```
 npm install poci
