@@ -1,10 +1,10 @@
 # Docs
 ## what is PociJS?
-PociJS is a simple JavaScript library for rendering and mananging your data   
-example :
+PociJS adalah sebuah library yang sederhana untuk rendering dan mengelola data   
+contoh :
 ```html
 <div>
-i learn a {{library}}
+i learn {{library}}
 </div>
 <script>
   const Root = new Poci.Init("div", {
@@ -12,13 +12,13 @@ i learn a {{library}}
   });
 </script>
 ```  
-result :
+hasil :
 ```
-i learn a Poci
+i learn Poci
 ```
 
 ## install
-you can install PociJS with NPM or Script  
+kita bisa menggunakan NPM / CDN untuk menginstall PociJS  
 ### NPM
 ```
 npm install poci
@@ -26,34 +26,32 @@ npm install poci
 
 ### Script
 ```html
-```html
 <script type="module">
    import Poci from "https://cdn.jsdelivr.net/npm/poci@1.0.1-beta/dist/main.mjs";
 </script>
 ```  
-```
 
 ## Poci.Init
-after install PociJS with NPM or Script, you need to init the PociJS   
+untuk memulai kita perlu melakukan **Init** ke root elementnya   
 ```js
 const Name = new Poci.Init(rootSelector : string, models : object);
 ```  
-note : meaning of the models is data  
+catatan : models itu data
 
 ## Hook Expression
-hook expression is a expression for accessing model, hook expression will use in an element   
-example :
+hook expression adalah expression untuk mengambil nilai   
+contoh :   
 - {{ library }}
 - {{ persons[0]->name }}
 - {{ fruits[0] }}  
 
 ## Poci.Init.set
-you can update model with **set method**, set is a method for updating or adding model  
+kamu bisa memperbarui / menambah model dengan **set method**, set adalah sebuah method untuk memperbarui / menambah model   
 ```js
 const Name = new Poci.Init(rootSelector : string, models : object);
 Name.set(key : string, value : value);
 ```  
-example :
+contoh :
 ```html
 <div id="root">
   {{name}}
@@ -65,18 +63,18 @@ example :
   Root.set("name", "John");
 </script>
 ```  
-result :
+hasil :
 ```
 John
 ```  
 
 ## Poci.Init.pull
-pull is method for removing PociJS in root element  
+pull adalah method untuk menghapus PociJS pada rootnya   
 ```js
 const Name = new Poci.Init(rootSelector : string, models : object);
 Name.pull();
 ```  
-example :
+contoh :
 ```js
 const Root = new Poci.Init("#root", {
   name:"John"
@@ -86,7 +84,7 @@ Root.set("name", "John"); // Error
 ```
 
 ## Poci.Init.track
-track is method for tracking change on root element and the children   
+track adalah method untuk melacak perubahan yang terjadi di root beserta childrennya    
 ```js
 const Name = new Poci.Init(rootSelector : string, models : object);
 Name.track();
@@ -101,31 +99,30 @@ document
   .setAttribute("class", "root");
 Root.track();
 ```  
-note : PociJS won't track elements content or attributes value
+catatan : PociJS tidak akan melacak perubahan element dan attributes valuenya
 
 ## Poci.Init.render
-render is method for rendering root element and the children   
+render adalah method untuk rendering root element beserta childrennya   
 ```js
 const Name = new Poci.Init(rootSelector : string, models : object);
 Name.render();
 ```  
 
 ## Model Connection
-in PociJS you can connect your model to some elements(input, textarea, select)  
+kita bisa menghubungkan model kita ke element input, element textarea dan element select
 ### Create Connection
-For create connection you just add ```data-connectFor``` Attribute to the element  
+untuk menghubungkan model ke element kita hanya perlu menambahkan attribute  ```data-connectFor``` ke element    
 ```
 data-connectFor="key"
 ```   
-note : resulting value will be of type string
 
 ### Listen the connection
-you can run a function when key change  
+kita juga bisa dengarkan key yang berubah karena koneksi     
 ```js
 const Name = new Poci.Init(rootSelector : string, models : object);
 Name.listenConnection(key : string, callback({key:string, value:value}) : function);
 ```  
-example :  
+contoh :  
 ```html
 <div id="root">
   <input type="text" data-connectFor="name" />
@@ -138,16 +135,15 @@ example :
      console.info(value);
   });
 </script>
-```  
-note : callback will only be called when the model is modified by an input element
+```   
 
 ### disconnect
-you can use disconnect method for stopping Connection of 1 element   
+kita bisa menghentikan koneksi yang terjadi pada 1 element   
 ```js
 const Name = new Poci.Init(rootSelector : string, models : object);
 Name.disconnect(connectionLabel : string);
 ```  
-example :  
+contoh :  
 ```html
 <div id="root">
   <input type="text" data-connectFor="name" />
@@ -161,6 +157,6 @@ example :
   );
 </script>
 ```  
-note : connection Label will save in DOM Element with ```$$label``` key
+catatan : koneksi label akan disimpan di DOM dalam bentuk key ```$$label```
 
 have fun<3
