@@ -2,13 +2,13 @@
 
 # PociJS
 License : MIT  
-PociJS is a JavaScript Library for **rendering and mananging your data**    
+PociJS adalah sebuah JavaScript library untuk **rendering dan mengelola data**    
 ```npm install poci```
 
 </div><br/>
 
 ## Install
-You can install PociJS with NPM or Script :   
+kita bisa menggunakan NPM / CDN untuk menginstall poci   
 ### NPM
 ```
 npm install poci
@@ -17,7 +17,7 @@ npm install poci
 ### Script
 ```html
 <script type="module">
-   import Poci from "https://cdn.jsdelivr.net/npm/poci@1.0.0-beta/dist/main.mjs";
+   import Poci from "https://cdn.jsdelivr.net/npm/poci@1.0.1-beta/dist/main.mjs";
 </script>
 ```  
 
