@@ -33,23 +33,19 @@ class Init
         
         // init properties
         this.#template = generateVDOM(this.root);
-        this.#vdom = generateVDOM(this.root);
+        this.#vdom = {...this.#template};
         this.#modelGroup = modelGroup;
         this.model = modelGroup;
 
         // render
         this.render();
         this.#connect(
-            document.querySelectorAll(
-                "input[data-connectFor], textarea[data-connectFor], select[data-connectFor]"
-            )
+            this.root.querySelectorAll("input[data-connectFor], textarea[data-connectFor], select[data-connectFor]")
         );
 
         const isRootInputElement = ["textarea", "input", "select"].indexOf(this.root.nodeName.toLocaleLowerCase()) !== -1;
         if(isRootInputElement && this.root.dataset.connectfor !== undefined){
-            this.#connect(
-                [this.root]
-            );
+            this.#connect([this.root]);
         }
     }
 
@@ -60,16 +56,12 @@ class Init
         for(const listener of this.#listenerStack)
             if(listener[0] === key || listener[0] === "*") callbackListener.push(listener[1]);
         
-        this.set(
-            key,
-            el.value
-        );
+        this.set(key, el.value);
 
         for(const listener of callbackListener){
             listener({
                 key,
                 value:el.value,
-                setValue: value => el.value = value
             });
         }
     }
@@ -77,7 +69,7 @@ class Init
     #connect(elements){
         for(const element of elements){
             const key = element.dataset.connectfor;
-            if(Object.keys(this.#modelGroup).indexOf(key) === -1)
+            if(Object.hasOwn(this.#modelGroup, key))
                 throw new PociError(`${key} is not found`, PociError.ParameterInvalid);
             
             const label = new Date().getTime().toString(16);
@@ -93,7 +85,7 @@ class Init
     }
     
     disconnect(label){
-        if(Object.keys(this.#connection).indexOf(label) === -1)
+        if(Object.hasOwn(this.#connection, label))
             throw new PociError(`${label} is not found`, PociError.ParameterInvalid);
         
         const [ element ] = this.#connection[label];
@@ -102,7 +94,7 @@ class Init
     }
 
     listenConnection(key, callback){
-        if(Object.keys(this.#modelGroup).indexOf(key) === -1 && key !== "*")
+        if(Object.hasOwn(this.#modelGroup, key) && key !== "*")
             throw new PociError(`${key} is not found`, PociError.ParameterInvalid);
         
         this.#listenerStack.push([key,callback]);
